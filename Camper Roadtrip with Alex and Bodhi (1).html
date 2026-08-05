@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>Grays River → LA — Camper Route</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F3EDDA;
+    --paper-2:#EAE2C7;
+    --pine:#1E3B2F;
+    --pine-2:#274E3D;
+    --ochre:#C68A33;
+    --denim:#34586B;
+    --rust:#A6431F;
+    --ink:#262019;
+    --ink-soft:#5B5344;
+    --line:#C9BFA0;
+    --card:#FBF8EE;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  .display{font-family:'Fraunces',serif;}
+
+  /* ---------- Header ---------- */
+  header.hero{
+    background:var(--pine);
+    color:var(--paper);
+    padding:28px 20px 22px;
+    position:relative;
+    overflow:hidden;
+  }
+  header.hero::after{
+    content:"";
+    position:absolute; inset:0;
+    background-image:
+      radial-gradient(circle at 88% 15%, rgba(198,138,51,0.18), transparent 45%),
+      radial-gradient(circle at 8% 90%, rgba(52,88,107,0.25), transparent 50%);
+    pointer-events:none;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    font-size:11px;
+    color:var(--ochre);
+    margin-bottom:8px;
+    position:relative;
+  }
+  h1{
+    font-family:'Fraunces',serif;
+    font-weight:700;
+    font-size:clamp(28px,7vw,40px);
+    line-height:1.02;
+    margin:0 0 10px;
+    position:relative;
+  }
+  h1 em{font-style:italic; font-weight:500; color:var(--ochre);}
+  .hero-sub{
+    font-size:14px;
+    color:#D9D2BC;
+    max-width:46ch;
+    line-height:1.5;
+    position:relative;
+  }
+  .hero-stats{
+    display:flex; gap:22px;
+    margin-top:18px;
+    position:relative;
+    flex-wrap:wrap;
+  }
+  .hero-stat .num{font-family:'IBM Plex Mono',monospace; font-size:20px; font-weight:600; color:var(--paper);}
+  .hero-stat .lbl{font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:#B9AF8F;}
+
+  /* ---------- Sticky day nav ---------- */
+  nav.daynav{
+    position:sticky; top:0; z-index:50;
+    background:var(--paper);
+    border-bottom:1px solid var(--line);
+    display:flex; gap:6px;
+    overflow-x:auto;
+    padding:10px 14px;
+    scrollbar-width:none;
+  }
+  nav.daynav::-webkit-scrollbar{display:none;}
+  nav.daynav a{
+    flex:0 0 auto;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11.5px;
+    text-decoration:none;
+    color:var(--ink-soft);
+    background:var(--paper-2);
+    border:1px solid var(--line);
+    padding:6px 11px;
+    border-radius:999px;
+    white-space:nowrap;
+  }
+  nav.daynav a.stay{color:var(--denim); border-color:var(--denim);}
+
+  /* ---------- Route spine ---------- */
+  main{max-width:640px; margin:0 auto; padding:22px 16px 60px; position:relative;}
+
+  .day{
+    position:relative;
+    padding-left:34px;
+    margin-bottom:34px;
+    scroll-margin-top:56px;
+  }
+  .day::before{ /* vertical line */
+    content:"";
+    position:absolute;
+    left:9px; top:6px; bottom:-34px;
+    width:2px;
+    background:repeating-linear-gradient(to bottom, var(--line) 0 6px, transparent 6px 11px);
+  }
+  .day:last-child::before{display:none;}
+  .day-node{
+    position:absolute;
+    left:0; top:2px;
+    width:20px; height:20px;
+    border-radius:50%;
+    background:var(--pine);
+    border:3px solid var(--paper);
+    box-shadow:0 0 0 2px var(--pine);
+  }
+  .day-node.stay{background:var(--denim); box-shadow:0 0 0 2px var(--denim);}
+
+  .day-head{
+    display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;
+    margin-bottom:4px;
+  }
+  .day-head .weekday{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px; font-weight:600;
+    letter-spacing:.1em;
+    color:var(--rust);
+  }
+  .day-head h2{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:19px;
+    margin:0;
+    color:var(--pine);
+  }
+  .route-line{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+    margin-bottom:10px;
+  }
+  .route-line .stat{color:var(--ochre); font-weight:600;}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:14px 15px;
+    margin-bottom:10px;
+  }
+  .card .flag{
+    display:inline-block;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:9.5px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    padding:2px 7px;
+    border-radius:999px;
+    margin-bottom:7px;
+  }
+  .flag.scenic{background:#DDE7DE; color:var(--pine-2);}
+  .flag.camp{background:#DDE9EF; color:var(--denim);}
+  .flag.nohookup{background:#F3DACD; color:var(--rust);}
+  .flag.watch{background:#F6E3C4; color:#8A5A16;}
+  .flag.beach{background:#EFE3C2; color:var(--rust);}
+
+  .card h3{
+    font-family:'Fraunces',serif;
+    font-size:15.5px;
+    font-weight:600;
+    margin:0 0 4px;
+  }
+  .card p{font-size:13.5px; line-height:1.5; margin:0; color:var(--ink-soft);}
+
+  /* stamps for food/coffee */
+  .stamps{display:flex; flex-wrap:wrap; gap:10px; margin-top:12px;}
+  .stamp{
+    width:96px; height:96px;
+    border:1.5px dashed var(--rust);
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    text-align:center;
+    transform:rotate(-5deg);
+    padding:8px;
+    flex-shrink:0;
+    text-decoration:none;
+    cursor:pointer;
+  }
+  .stamp:nth-child(even){transform:rotate(4deg);}
+  .stamp .t{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:9.5px;
+    line-height:1.25;
+    text-transform:uppercase;
+    letter-spacing:.03em;
+    color:var(--rust);
+    font-weight:600;
+  }
+
+  .note{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    border-left:2px solid var(--ochre);
+    padding-left:10px;
+    margin-top:10px;
+    line-height:1.5;
+  }
+
+  .maplink{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    margin-top:8px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;
+    color:var(--denim);
+    text-decoration:none;
+    border-bottom:1px solid var(--denim);
+    padding-bottom:1px;
+  }
+  .maplink:before{content:"↗";}
+  .routelink{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    margin-bottom:12px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    font-weight:600;
+    color:var(--paper);
+    background:var(--pine);
+    padding:6px 12px;
+    border-radius:999px;
+    text-decoration:none;
+    width:fit-content;
+  }
+  .routelink:before{content:"↗";}
+
+  .stay-block{
+    background:var(--paper-2);
+    border:1px dashed var(--denim);
+    border-radius:10px;
+    padding:12px 15px;
+    font-size:13px;
+    color:var(--denim);
+  }
+
+  footer{
+    text-align:center;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;
+    color:var(--ink-soft);
+    padding:20px 16px 40px;
+    letter-spacing:.04em;
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">Camper Shakedown · Grays River → Los Angeles</div>
+  <h1>Home the <em>slow</em> way.</h1>
+  <div class="hero-sub">Alex, Bodhi, and the Kenai — down the 101 and the 1, redwoods to Big Sur.</div>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num">10</div><div class="lbl">Days</div></div>
+    <div class="hero-stat"><div class="num">~1,150</div><div class="lbl">Miles</div></div>
+    <div class="hero-stat"><div class="num">7</div><div class="lbl">Campsites</div></div>
+    <div class="hero-stat"><div class="num">7</div><div class="lbl">🐾 Beaches</div></div>
+  </div>
+</header>
+
+<nav class="daynav" id="daynav">
+  <a href="javascript:void(0)" onclick="goTo('d1')">THU · D1</a>
+  <a href="javascript:void(0)" onclick="goTo('d2')">FRI · D2</a>
+  <a href="javascript:void(0)" onclick="goTo('d3')">SAT · D3</a>
+  <a href="javascript:void(0)" onclick="goTo('d4')">SUN · D4</a>
+  <a href="javascript:void(0)" onclick="goTo('stay')" class="stay">MON–WED</a>
+  <a href="javascript:void(0)" onclick="goTo('d8')">THU · D8</a>
+  <a href="javascript:void(0)" onclick="goTo('d9')">FRI · D9</a>
+  <a href="javascript:void(0)" onclick="goTo('d10')">SAT · HOME</a>
+</nav>
+
+<main>
+
+  <!-- DAY 1 -->
+  <div class="day" id="d1">
+    <div class="day-node"></div>
+    <div class="day-head"><span class="weekday">THU · DAY 1</span><h2>Grays River → Beachside SRS</h2></div>
+    <div class="route-line">Depart Dad's → <span class="stat">~190 mi</span> · <span class="stat">~4.5 hrs w/ stops</span></div>
+    <a class="routelink" target="_blank" href="https://www.google.com/maps/dir/?api=1&origin=46.3562176,-123.6093106&destination=44.3828738,-124.0884361&waypoints=46.1651049,-123.9237557|45.4839833,-123.8442545&travelmode=driving">Open Day 1 route</a>
+
+    <div class="card">
+      <span class="flag watch">Errands</span>
+      <h3>Warrenton, OR</h3>
+      <p>Grocery/supply run before the coast — Fred Meyer, Safeway, Walmart all here.</p>
+      <a class="maplink" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Warrenton+OR&query_place_id=ChIJ9TqbukFkk1QRWmNy3RwrtB8">View on Maps</a>
+    </div>
+
+    <div class="card">
+      <span class="flag scenic">Worth the time</span>
+      <h3>Tillamook Creamery</h3>
+      <p>Cheese tour, tastings, ice cream, cheese curds. Get there early — lines get long.</p>
+      <a class="maplink" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Tillamook+Creamery&query_place_id=ChIJkTGfdZ0s61QRmol6Blc8ueM">View on Maps</a>
+    </div>
+
+    <div class="card">
+      <span class="flag camp">Camp tonight</span>
+      <h3>Beachside State Recreation Site</h3>
+      <p>Site 040, Loop B. 30-amp electric + water hookup, back-in paved site. Check-out is 1:00 PM here (Oregon standard), not noon.</p>
+      <a class="maplink" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Beachside+State+Recreation+Site&query_place_id=ChIJB3kN1w_qwVQRQpUxu-3aJGw">View on Maps</a>
+    </div>
+
+    <div class="stamps">
+      <a class="stamp" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Sleeper+Coffee&query_place_id=ChIJR4RudFB7k1QReuGZgzcmNNI"><div class="t">Sleeper<br>Coffee<br>★ favorite</div></a>
+      <a class="stamp" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Blue+Scorcher+Bakery&query_place_id=ChIJuxw-S0l7k1QRrqZFSOXxvkw"><div class="t">Blue<br>Scorcher<br>★ favorite</div></a>
+    </div>
+    <div class="note">Sleeper & Blue Scorcher are in Astoria proper — skipped this trip in favor of the Warrenton errand run, but noted for next time.</div>
+  </div>
+
+  <!-- DAY 2 -->
+  <div class="day" id="d2">
+    <div class="day-node"></div>
+    <div class="day-head"><span class="weekday">FRI · DAY 2</span><h2>Beachside → Harris Beach</h2></div>
+    <div class="route-line">Longest day → <span class="stat">~200 mi</span> · <span class="stat">~5.5 hrs w/ stops</span></div>
+    <a class="routelink" target="_blank" href="https://www.google.com/maps/dir/?api=1&origin=44.3828738,-124.0884361&destination=42.0684547,-124.311072&waypoints=44.1217756,-124.1267085|43.1053223,-124.4340947&travelmode=driving">Open Day 2 route</a>
+
+    <div class="card">
+      <span class="flag scenic">Sea Lion Caves</span>
+      <h3>Elevator down to a wild sea cave</h3>
+      <p>Great coastal views too. Steep paths — budget an hour.</p>
+      <a class="maplink" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Sea+Lion+Caves&query_place_id=ChIJXa2i4e2FwVQRH8Fge_jOjG0">View on Maps</a>
+    </div>
+
+    <div class="card">
+      <span class="flag scenic">Face Rock, Bandon</span>
+      <h3>Dramatic rock formations</h3>
+      <p>Dog-friendly on leash, short walk if the tide's out.</p>
+      <a class="maplink" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Face+Rock+State+Scenic+Viewpoint&query_place_id=ChIJVeGAo7ybxFQRRx15wcXzK20">View on Maps</a>
+    </div>
+
+    <div class="card">
+      <span class="flag beach">🐾 Bodhi's beach</span>
+      <h3>Bandon State Natural Area</h3>
+      <p>Confirmed dog-friendly sand and sea stacks, right by Face Rock. Good stretch for a real run.</p>
+      <a class="maplink" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Bandon+State+Natural+Area&query_place_id=ChIJ4aRD-OOZxFQRmYFC4upGg1s">View on Maps</a>
+    </div>
+
+    <div class="card">
+      <span class="flag camp">Camp tonight</span>
+      <h3>Harris Beach State Park</h3>
+      <p>Site A13, Loop A. Full hookup — 50-amp electric, water, and sewer. Check-out is 1:00 PM here too.</p>
+      <a class="maplink" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Harris+Beach+State+Park&query_place_id=ChIJpWYl7gWi2lQR_oo187c1mDY">View on Maps</a>
+    </div>
+
+    <div class="stamps">
+      <a class="stamp" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Bread+%26+Roses+Bakery+Yachats&query_place_id=ChIJR_6mqFLrwVQR0aoZHXdAmZU"><div class="t">Bread &<br>Roses<br>Yachats</div></a>
+      <a class="stamp" target="_blank" href="https://www.google.com/maps/search/?api=1&query=The+Rolling+Pin+Bake+%26+Brew&query_place_id=ChIJh5d0SG2bxFQRDJSI6aJ5IB4"><div class="t">The<br>Rolling Pin<br>Bandon</div></a>
+      <a class="stamp" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Bandon+Baking+Co+%26+Deli&query_place_id=ChIJA-85Q22bxFQR5ZdbCo_7Ru8"><div class="t">Bandon<br>Baking Co<br>+ Deli</div></a>
+    </div>
+    <div class="note">Bread & Roses only open Thu–Sun. Bandon Baking Co has great bagel sandwiches — Tiger Special on an artichoke bagel is the local favorite.</div>
+  </div>
+
+  <!-- DAY 3 -->
+  <div class="day" id="d3">
+    <div class="day-node"></div>
+    <div class="day-head"><span class="weekday">SAT · DAY 3</span><h2>Harris Beach → Albee Creek</h2></div>
+    <div class="route-line">Redwoods day → <span class="stat">~130 mi</span> · <span class="stat">~3.5–4 hrs w/ stops</span></div>
+    <a class="routelink" target="_blank" href="https://www.google.com/maps/dir/?api=1&origin=42.0684547,-124.311072&destination=40.3518352,-124.0104733&waypoints=41.584849,-124.086106|41.0289417,-124.1119228&travelmode=driving">Open Day 3 route</a>
+
+    <div class="card">
+      <span class="flag scenic">Trees of Mystery</span>
+      <h3>Redwood canopy gondola + trail</h3>
+      <p>Dog-friendly on most trails. 1.5–2 hrs to do it justice.</p>
+      <a class="maplink" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Trees+of+Mystery&query_place_id=ChIJAyvcClRX0FQR1pUORlZdyak">View on Maps</a>
+    </div>
+
+    <div class="card">
+      <span class="flag beach">🐾 Bodhi's beach</span>
+      <h3>Moonstone Beach, Trinidad</h3>
+      <p>Wide flat sand, shallow water, tide pools at low tide — great for a long run. Right on the way, just north of Eureka.</p>
+      <a class="maplink" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Moonstone+Beach+County+Park&query_place_id=ChIJuTOvcPFD0VQRpXY2rJKnhnI">View on Maps</a>
+    </div>
+
+    <div class="card">
+      <span class="flag nohookup">No hookups tonight</span>
+      <h3>Albee Creek Campground</h3>
+      <p>Site 006Ac, tent campsite — confirmed no hookups. Top off water & batteries in Eureka before heading in. Conf #31340196.</p>
+      <a class="maplink" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Albee+Creek+Campground&query_place_id=ChIJHSHtDpRj1FQRNR15IueAbXI">View on Maps</a>
+    </div>
+
+    <div class="stamps">
+      <a class="stamp" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Frankie%27s+NY+Bagels&query_place_id=ChIJaVxXfa7_01QR_JiH0c-eQhQ"><div class="t">Frankie's<br>NY Bagels<br>Eureka</div></a>
+      <a class="stamp" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Stu%27s+Brews+Drive-Thru&query_place_id=ChIJH_egWzpV0VQRgncOYvTGvdg"><div class="t">Stu's<br>Brews<br>drive-thru</div></a>
+    </div>
+    <div class="note">Frankie's has real vegan/GF bagel options if needed. Stu's is the easy in-and-out with dog treats for Bodhi.</div>
+  </div>
+
+  <!-- DAY 4 -->
+  <div class="day" id="d4">
+    <div class="day-node"></div>
+    <div class="day-head"><span class="weekday">SUN · DAY 4</span><h2>Albee Creek → Fort Bragg</h2></div>
+    <div class="route-line">Via Leggett → <span class="stat">~130 mi</span> · <span class="stat">~4 hrs</span></div>
+    <a class="routelink" target="_blank" href="https://www.google.com/maps/dir/?api=1&origin=40.3518352,-124.0104733&destination=39.4065951,-123.8048277&waypoints=40.3081954,-123.9088866&travelmode=driving">Open Day 4 route</a>
+
+    <div class="card">
+      <span class="flag scenic">Avenue of the Giants</span>
+      <h3>31-mi old-growth redwood byway</h3>
+      <p>Slow and gorgeous — this is the drive, not a stop. Plenty of pullouts.</p>
+      <a class="maplink" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Avenue+of+the+Giants&query_place_id=ChIJLfJGwkhi1FQRQWA7jw7Vhyg">View on Maps</a>
+    </div>
+
+    <div class="card">
+      <span class="flag camp">Camp tonight → 4 nights</span>
+      <h3>Pomo RV Park & Campground</h3>
+      <p>Full hookups. Time to actually settle in, do laundry, dial in the Victron setup.</p>
+      <a class="maplink" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Pomo+RV+Park&query_place_id=ChIJ62h-xcVKgIAR79XxXHdUt_s">View on Maps</a>
+    </div>
+
+    <div class="stamps">
+      <a class="stamp" target="_blank" href="https://www.google.com/maps/search/?api=1&query=B+%26+C+Market&query_place_id=ChIJo0Z43k01gIAR-8GFxdjNWI4"><div class="t">B & C<br>Market<br>Ft Bragg</div></a>
+      <a class="stamp" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Laurel+Deli+%26+Desserts&query_place_id=ChIJTf87jEg1gIAR6ZkMB7N27uE"><div class="t">Laurel<br>Deli<br>Ft Bragg</div></a>
+    </div>
+    <div class="note">Laurel Deli's Fargo cinnamon roll is a local legend. B & C has a full deli + coffee bar for easy lunches during the stay.</div>
+  </div>
+
+  <!-- STAY -->
+  <div class="day" id="stay">
+    <div class="day-node stay"></div>
+    <div class="day-head"><span class="weekday">MON–WED · DAYS 5–7</span><h2>Fort Bragg — settle in</h2></div>
+    <div class="stay-block mono">No driving. Reset point for the trip — recharge batteries (literally), grocery run, explore Mendocino/Fort Bragg on foot.</div>
+
+    <div class="card">
+      <span class="flag beach">🐾 Bodhi's beach</span>
+      <h3>Noyo Beach Off-Leash Dog Area</h3>
+      <p>An actual off-leash beach right in the Fort Bragg harbor. Small but scenic, good for a daily run during the stay.</p>
+      <a class="maplink" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Noyo+Beach+Off-Leash+Dog+Area&query_place_id=ChIJrZlQ3adKgIARayG9AQDXkp0">View on Maps</a>
+    </div>
+
+    <div class="card">
+      <span class="flag beach">🐾 Bodhi's beach</span>
+      <h3>Jug Handle Beach</h3>
+      <p>Protected cove, soft white sand, calmer water — a nice change of pace from Noyo.</p>
+      <a class="maplink" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Jug+Handle+Beach&query_place_id=ChIJZ3hT6z1LgIARtV8Ca60RqAk">View on Maps</a>
+    </div>
+  </div>
+
+  <!-- DAY 8 -->
+  <div class="day" id="d8">
+    <div class="day-node"></div>
+    <div class="day-head"><span class="weekday">THU · DAY 8</span><h2>Fort Bragg → New Brighton</h2></div>
+    <div class="route-line">Via Oakland (inland) → <span class="stat">~230 mi</span> · <span class="stat">~5 hrs + visit</span></div>
+    <a class="routelink" target="_blank" href="https://www.google.com/maps/dir/?api=1&origin=39.4065951,-123.8048277&destination=36.9784397,-121.9382294&waypoints=37.8049229,-122.2696423|36.9604372,-121.9872747&travelmode=driving">Open Day 8 route</a>
+
+    <div class="card">
+      <span class="flag watch">Family visit</span>
+      <h3>Oakland, CA</h3>
+      <p>Cut inland via Hwy 20/128 rather than backtracking down the coast. Avoid landing right at evening rush (3:30–6:30pm) if towing.</p>
+      <a class="maplink" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Oakland+CA&query_place_id=ChIJg3mNR7KAj4AR6MAZAwOAIlM">View on Maps</a>
+    </div>
+
+    <div class="card">
+      <span class="flag beach">🐾 Bodhi's beach</span>
+      <h3>Santa Maria Beach, Santa Cruz</h3>
+      <p>Dog-friendly locals' beach right near Capitola — a good stretch-the-legs after the Oakland drive.</p>
+      <a class="maplink" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Santa+Maria+Beach+Santa+Cruz&query_place_id=ChIJuSIAMDcVjoARYTUWzeWGXG4">View on Maps</a>
+    </div>
+
+    <div class="card">
+      <span class="flag nohookup">No hookups tonight</span>
+      <h3>New Brighton State Beach</h3>
+      <p>Site 042, Southern End. Confirmed no hookups — dry camp here, so plan power/water accordingly after the Oakland drive.</p>
+      <a class="maplink" target="_blank" href="https://www.google.com/maps/search/?api=1&query=New+Brighton+State+Beach&query_place_id=ChIJD1f3gaIVjoARoRlBMaZVEdU">View on Maps</a>
+    </div>
+
+    <div class="stamps">
+      <a class="stamp" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Gayle%27s+Bakery+%26+Rosticceria&query_place_id=ChIJqfVArHYVjoARrEFmLH1-p1c"><div class="t">Gayle's<br>Bakery<br>Capitola</div></a>
+      <a class="stamp" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Zizzo%27s+Coffee&query_place_id=ChIJB-a3qEIVjoARXcTNsqQmyHQ"><div class="t">Zizzo's<br>Coffee<br>bagels</div></a>
+      <a class="stamp" target="_blank" href="https://www.google.com/maps/search/?api=1&query=La+Marea+Cafe+%26+Pizzeria&query_place_id=ChIJj8xW3KoVjoARn3D84d_16OI"><div class="t">La Marea<br>Cafe<br>bagels</div></a>
+    </div>
+    <div class="note">Capitola is right at New Brighton — Gayle's cinnamon rolls, or La Marea for what locals call the best bagel in the area (jalapeño cheddar).</div>
+  </div>
+
+  <!-- DAY 9 -->
+  <div class="day" id="d9">
+    <div class="day-node"></div>
+    <div class="day-head"><span class="weekday">FRI · DAY 9</span><h2>New Brighton → Cambria</h2></div>
+    <div class="route-line">Through Big Sur → <span class="stat">~110 mi</span> · <span class="stat">~4+ hrs w/ stops</span></div>
+    <a class="routelink" target="_blank" href="https://www.google.com/maps/dir/?api=1&origin=36.9784397,-121.9382294&destination=35.5641,-121.0807&waypoints=36.3714835,-121.901924|36.1578259,-121.6721628|35.7814021,-121.3300909|35.6142353,-121.1473664&travelmode=driving">Open Day 9 route</a>
+
+    <div class="card">
+      <span class="flag scenic">Bixby Creek Bridge</span>
+      <h3>The iconic Big Sur photo stop</h3>
+      <p>Best in morning light. Parking gets tight midday.</p>
+      <a class="maplink" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Bixby+Creek+Bridge&query_place_id=ChIJQeDYpaCUjYARtSYdrEU4DKo">View on Maps</a>
+    </div>
+
+    <div class="card">
+      <span class="flag scenic">McWay Falls</span>
+      <h3>Waterfall dropping onto the beach</h3>
+      <p>Short walk from the Hwy 1 pullout.</p>
+      <a class="maplink" target="_blank" href="https://www.google.com/maps/search/?api=1&query=McWay+Falls&query_place_id=ChIJdWXVljSAjYAR9cI1Q265aGY">View on Maps</a>
+    </div>
+
+    <div class="card">
+      <span class="flag scenic">Ragged Point</span>
+      <h3>Cliffside lunch/coffee break</h3>
+      <p>Marks the end of Big Sur proper.</p>
+      <a class="maplink" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Ragged+Point&query_place_id=ChIJD-O908jLkoAR1GdJxXSIdmQ">View on Maps</a>
+    </div>
+
+    <div class="card">
+      <span class="flag beach">🐾 Bodhi's beach</span>
+      <h3>Pico Creek Beach, San Simeon</h3>
+      <p>Quiet surf beach right before Cambria — a good last stretch of the legs before setting up camp.</p>
+      <a class="maplink" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Pico+Creek+Beach&query_place_id=ChIJ6YQTj_8z7YARrT70N0IYA7M">View on Maps</a>
+    </div>
+
+    <div class="card">
+      <span class="flag nohookup">No hookups tonight</span>
+      <h3>Cambria Hipcamp</h3>
+      <p>Last night before the home stretch.</p>
+      <a class="maplink" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Cambria+CA">View on Maps</a>
+    </div>
+
+    <div class="stamps">
+      <a class="stamp" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Lily%27s+Coffee+House&query_place_id=ChIJyxL2ZSsw7YAR6b1Zgvg4P_k"><div class="t">Lily's<br>Coffee House<br>Cambria</div></a>
+      <a class="stamp" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Sandy%27s+Deli&query_place_id=ChIJL-vCr8kx7YARcm0PXiGDXts"><div class="t">Sandy's<br>Deli<br>Cambria</div></a>
+    </div>
+    <div class="note">Sandy's Deli — order the Godfather. Cell service is spotty through most of Big Sur, so give Cambria a heads-up before you lose signal.</div>
+  </div>
+
+  <!-- DAY 10 -->
+  <div class="day" id="d10">
+    <div class="day-node"></div>
+    <div class="day-head"><span class="weekday">SAT · DAY 10</span><h2>Cambria → Los Angeles</h2></div>
+    <div class="route-line">Final stretch → <span class="stat">~230 mi</span> · <span class="stat">~4 hrs</span></div>
+    <a class="routelink" target="_blank" href="https://www.google.com/maps/dir/?api=1&origin=35.5641,-121.0807&destination=Los+Angeles,+CA&travelmode=driving">Open Day 10 route</a>
+
+    <div class="card">
+      <span class="flag watch">Home</span>
+      <h3>Back to West Adams</h3>
+      <p>No stops planned yet — this page has room for whatever you want to add.</p>
+    </div>
+  </div>
+
+</main>
+
+<footer>MADE FOR THE SCOUT KENAI · GRAYS RIVER → LA · 2026</footer>
+
+<script>
+  function goTo(id){
+    var el = document.getElementById(id);
+    if(el){ el.scrollIntoView({behavior:'smooth', block:'start'}); }
+  }
+</script>
+</body>
+</html>
