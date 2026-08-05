@@ -8,17 +8,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#F3EDDA;
-    --paper-2:#EAE2C7;
-    --pine:#1E3B2F;
-    --pine-2:#274E3D;
-    --ochre:#C68A33;
-    --denim:#34586B;
-    --rust:#A6431F;
-    --ink:#262019;
-    --ink-soft:#5B5344;
-    --line:#C9BFA0;
-    --card:#FBF8EE;
+    --paper:#F5ECE1;
+    --paper-2:#ECE0CE;
+    --pine:#35321D;
+    --pine-2:#6E5A24;
+    --ochre:#DD7F38;
+    --denim:#517295;
+    --rust:#907237;
+    --pomelo:#D7CC62;
+    --sky:#B3D0DE;
+    --ink:#2E2A18;
+    --ink-soft:#6B6048;
+    --line:#D8C9AE;
+    --card:#FBF6EC;
   }
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
   html{scroll-behavior:smooth;}
@@ -34,7 +36,7 @@
 
   /* ---------- Header ---------- */
   header.hero{
-    background:var(--pine);
+    background:var(--denim);
     color:var(--paper);
     padding:28px 20px 22px;
     position:relative;
@@ -44,8 +46,8 @@
     content:"";
     position:absolute; inset:0;
     background-image:
-      radial-gradient(circle at 88% 15%, rgba(198,138,51,0.18), transparent 45%),
-      radial-gradient(circle at 8% 90%, rgba(52,88,107,0.25), transparent 50%);
+      radial-gradient(circle at 88% 15%, rgba(221,127,56,0.24), transparent 45%),
+      radial-gradient(circle at 8% 90%, rgba(215,204,98,0.22), transparent 50%);
     pointer-events:none;
   }
   .eyebrow{
@@ -53,7 +55,7 @@
     letter-spacing:.14em;
     text-transform:uppercase;
     font-size:11px;
-    color:var(--ochre);
+    color:#E4DCC8;
     margin-bottom:8px;
     position:relative;
   }
@@ -65,12 +67,12 @@
     margin:0 0 10px;
     position:relative;
   }
-  h1 em{font-style:italic; font-weight:500; color:var(--ochre);}
+  h1 em{font-style:italic; font-weight:500; color:#E4DCC8;}
   .hero-sub{
     font-size:14px;
-    color:#D9D2BC;
+    color:#E4DCC8;
     max-width:46ch;
-    line-height:1.5;
+    line-height:1.55;
     position:relative;
   }
   .hero-stats{
@@ -80,7 +82,7 @@
     flex-wrap:wrap;
   }
   .hero-stat .num{font-family:'IBM Plex Mono',monospace; font-size:20px; font-weight:600; color:var(--paper);}
-  .hero-stat .lbl{font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:#B9AF8F;}
+  .hero-stat .lbl{font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:#C6D3DC;}
 
   /* ---------- Sticky day nav ---------- */
   nav.daynav{
@@ -105,7 +107,6 @@
     border-radius:999px;
     white-space:nowrap;
   }
-  nav.daynav a.stay{color:var(--denim); border-color:var(--denim);}
 
   /* ---------- Route spine ---------- */
   main{max-width:640px; margin:0 auto; padding:22px 16px 60px; position:relative;}
@@ -158,7 +159,13 @@
     color:var(--ink-soft);
     margin-bottom:10px;
   }
-  .route-line .stat{color:var(--ochre); font-weight:600;}
+  .route-line .stat{
+    color:var(--pine);
+    font-weight:600;
+    background:rgba(215,204,98,0.55);
+    padding:1px 6px;
+    border-radius:4px;
+  }
 
   .card{
     background:var(--card);
@@ -177,11 +184,11 @@
     border-radius:999px;
     margin-bottom:7px;
   }
-  .flag.scenic{background:#DDE7DE; color:var(--pine-2);}
-  .flag.camp{background:#DDE9EF; color:var(--denim);}
-  .flag.nohookup{background:#F3DACD; color:var(--rust);}
-  .flag.watch{background:#F6E3C4; color:#8A5A16;}
-  .flag.beach{background:#EFE3C2; color:var(--rust);}
+  .flag.scenic{background:rgba(179,208,222,0.55); color:var(--denim);}
+  .flag.camp{background:#DCE6ED; color:var(--denim);}
+  .flag.nohookup{background:#F0E1C9; color:var(--rust);}
+  .flag.watch{background:#F7D9BC; color:#8A4A1A;}
+  .flag.beach{background:#F0E1C9; color:var(--rust);}
 
   .card h3{
     font-family:'Fraunces',serif;
@@ -325,7 +332,8 @@
     <div class="card">
       <span class="flag camp">Camp tonight</span>
       <h3>Beachside State Recreation Site</h3>
-      <p>Site 040, Loop B. 30-amp electric + water hookup, back-in paved site. Check-out is 1:00 PM here (Oregon standard), not noon.</p>
+      <p>Site 040, Loop B. 30-amp electric + water hookup, back-in paved site.</p>
+      <p class="mono" style="margin-top:6px; font-size:11.5px; color:var(--ink-soft);">Check-in 4:00 PM · Check-out 1:00 PM</p>
       <a class="maplink" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Beachside+State+Recreation+Site&query_place_id=ChIJB3kN1w_qwVQRQpUxu-3aJGw">View on Maps</a>
     </div>
 
@@ -367,7 +375,8 @@
     <div class="card">
       <span class="flag camp">Camp tonight</span>
       <h3>Harris Beach State Park</h3>
-      <p>Site A13, Loop A. Full hookup — 50-amp electric, water, and sewer. Check-out is 1:00 PM here too.</p>
+      <p>Site A13, Loop A. Full hookup — 50-amp electric, water, and sewer.</p>
+      <p class="mono" style="margin-top:6px; font-size:11.5px; color:var(--ink-soft);">Check-in 4:00 PM · Check-out 1:00 PM</p>
       <a class="maplink" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Harris+Beach+State+Park&query_place_id=ChIJpWYl7gWi2lQR_oo187c1mDY">View on Maps</a>
     </div>
 
@@ -404,8 +413,11 @@
       <span class="flag nohookup">No hookups tonight</span>
       <h3>Albee Creek Campground</h3>
       <p>Site 006Ac, tent campsite — confirmed no hookups. Top off water & batteries in Eureka before heading in. Conf #31340196.</p>
+      <p class="mono" style="margin-top:6px; font-size:11.5px; color:var(--ink-soft);">Check-in 2:00 PM · Check-out 12:00 PM</p>
       <a class="maplink" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Albee+Creek+Campground&query_place_id=ChIJHSHtDpRj1FQRNR15IueAbXI">View on Maps</a>
     </div>
+
+    <div class="note">Harris Beach checkout (1pm) → Albee Creek check-in (2pm) is only a 1-hour window on paper. With Trees of Mystery and Moonstone Beach both planned this day, you'll likely arrive after 2pm anyway — just don't count on an early check-in here.</div>
 
     <div class="stamps">
       <a class="stamp" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Frankie%27s+NY+Bagels&query_place_id=ChIJaVxXfa7_01QR_JiH0c-eQhQ"><div class="t">Frankie's<br>NY Bagels<br>Eureka</div></a>
@@ -432,6 +444,7 @@
       <span class="flag camp">Camp tonight → 4 nights</span>
       <h3>Pomo RV Park & Campground</h3>
       <p>Full hookups. Time to actually settle in, do laundry, dial in the Victron setup.</p>
+      <p class="mono" style="margin-top:6px; font-size:11.5px; color:var(--ink-soft);">Check-in/out not yet confirmed — private RV park, worth verifying</p>
       <a class="maplink" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Pomo+RV+Park&query_place_id=ChIJ62h-xcVKgIAR79XxXHdUt_s">View on Maps</a>
     </div>
 
@@ -488,6 +501,7 @@
       <span class="flag nohookup">No hookups tonight</span>
       <h3>New Brighton State Beach</h3>
       <p>Site 042, Southern End. Confirmed no hookups — dry camp here, so plan power/water accordingly after the Oakland drive.</p>
+      <p class="mono" style="margin-top:6px; font-size:11.5px; color:var(--ink-soft);">Check-in 2:00 PM · Check-out 12:00 PM</p>
       <a class="maplink" target="_blank" href="https://www.google.com/maps/search/?api=1&query=New+Brighton+State+Beach&query_place_id=ChIJD1f3gaIVjoARoRlBMaZVEdU">View on Maps</a>
     </div>
 
@@ -538,6 +552,7 @@
       <span class="flag nohookup">No hookups tonight</span>
       <h3>Cambria Hipcamp</h3>
       <p>Last night before the home stretch.</p>
+      <p class="mono" style="margin-top:6px; font-size:11.5px; color:var(--ink-soft);">Check-in/out not yet confirmed — check your Hipcamp listing</p>
       <a class="maplink" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Cambria+CA">View on Maps</a>
     </div>
 
