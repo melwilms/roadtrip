@@ -3,11 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="color-scheme" content="light">
 <title>Grays River → LA — Camper Route</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
   :root{
+    color-scheme: light;
     --paper:#F5ECE1;
     --paper-2:#ECE0CE;
     --pine:#35321D;
@@ -23,13 +25,22 @@
     --card:#FBF6EC;
   }
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
-  html{scroll-behavior:smooth;}
+  html{scroll-behavior:smooth; background:var(--paper);}
   body{
     margin:0;
     background:var(--paper);
     color:var(--ink);
     font-family:'Inter',sans-serif;
     -webkit-font-smoothing:antialiased;
+  }
+  @media (prefers-color-scheme: dark){
+    html, body{
+      background:#F5ECE1 !important;
+      color:#2E2A18 !important;
+    }
+    nav.daynav{background:#F5ECE1 !important;}
+    .card{background:#FBF6EC !important; color:#2E2A18 !important;}
+    .card p{color:#6B6048 !important;}
   }
   .mono{font-family:'IBM Plex Mono',monospace;}
   .display{font-family:'Fraunces',serif;}
@@ -444,7 +455,7 @@
       <span class="flag camp">Camp tonight → 4 nights</span>
       <h3>Pomo RV Park & Campground</h3>
       <p>Full hookups. Time to actually settle in, do laundry, dial in the Victron setup.</p>
-      <p class="mono" style="margin-top:6px; font-size:11.5px; color:var(--ink-soft);">Check-in/out not yet confirmed — private RV park, worth verifying</p>
+      <p class="mono" style="margin-top:6px; font-size:11.5px; color:var(--ink-soft);">Check-in 2:00 PM · Check-out 12:00 PM</p>
       <a class="maplink" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Pomo+RV+Park&query_place_id=ChIJ62h-xcVKgIAR79XxXHdUt_s">View on Maps</a>
     </div>
 
@@ -567,14 +578,44 @@
   <div class="day" id="d10">
     <div class="day-node"></div>
     <div class="day-head"><span class="weekday">SAT · DAY 10</span><h2>Cambria → Los Angeles</h2></div>
-    <div class="route-line">Final stretch → <span class="stat">~230 mi</span> · <span class="stat">~4 hrs</span></div>
-    <a class="routelink" target="_blank" href="https://www.google.com/maps/dir/?api=1&origin=35.5641,-121.0807&destination=Los+Angeles,+CA&travelmode=driving">Open Day 10 route</a>
+    <div class="route-line">Final stretch → <span class="stat">~235 mi</span> · <span class="stat">~5 hrs w/ stops</span></div>
+    <a class="routelink" target="_blank" href="https://www.google.com/maps/dir/?api=1&origin=35.5641,-121.0807&destination=Los+Angeles,+CA&waypoints=35.2595819,-120.6448016|34.4407511,-119.7313358|34.4028444,-119.7432062&travelmode=driving">Open Day 10 route</a>
+
+    <div class="card">
+      <span class="flag watch">Lunch stop</span>
+      <h3>High Street Deli, SLO</h3>
+      <p>Dog-friendly, kid-friendly, good sandwiches. Nearby street parking fills up fast, so be ready to walk a couple blocks.</p>
+      <a class="maplink" target="_blank" href="https://www.google.com/maps/search/?api=1&query=High+Street+Deli+San+Luis+Obispo&query_place_id=ChIJ42U1NgDx7IAR4jIlaLUqcm8">View on Maps</a>
+    </div>
+
+    <div class="card">
+      <span class="flag scenic">Santa Barbara</span>
+      <h3>State Street</h3>
+      <p>Good stretch-the-legs stop — palm-lined main drag, shops, and easy walkable downtown before the final push into LA.</p>
+      <a class="maplink" target="_blank" href="https://www.google.com/maps/search/?api=1&query=State+Street+Santa+Barbara&query_place_id=EiBTdGF0ZSBTdCwgU2FudGEgQmFyYmFyYSwgQ0EsIFVTQSIuKiwKFAoSCfeFEGrwFOmAEYn4I_VRzcnGEhQKEgnVgy1vxxTpgBFIdrrXZDrRyA">View on Maps</a>
+    </div>
+
+    <div class="card">
+      <span class="flag watch">Coffee stop</span>
+      <h3>Brass Bird Coffee & Kitchen</h3>
+      <p>Confirmed dog-friendly, indoor and outdoor seating, great pastries. Sits directly across the street from MacKenzie Park Dog Park — good combo if Bodhi wants to run before the coffee.</p>
+      <a class="maplink" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Brass+Bird+Coffee+%26+Kitchen&query_place_id=ChIJ9yFv9bsV6YARjsVdBCxXyiI">View on Maps</a>
+    </div>
+
+    <div class="card">
+      <span class="flag beach">🐾 Bodhi's beach</span>
+      <h3>Arroyo Burro Beach (Hendry's Beach)</h3>
+      <p>Genuinely off-leash with a reserved dog section, tide pools, and a beachside restaurant if you want lunch with a view instead of High Street.</p>
+      <a class="maplink" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Arroyo+Burro+Beach+County+Park&query_place_id=ChIJbZsC90wU6YARjtZASm1HAO0">View on Maps</a>
+    </div>
 
     <div class="card">
       <span class="flag watch">Home</span>
       <h3>Back to West Adams</h3>
-      <p>No stops planned yet — this page has room for whatever you want to add.</p>
+      <p>Trip's end — this card has room for whatever else you want to add as the day gets closer.</p>
     </div>
+
+    <div class="note">Arroyo Burro and Brass Bird are both a few minutes off State Street proper — easy to combine into one Santa Barbara stop rather than treating them as separate detours. With SLO, Santa Barbara, and these two added, this is now your second-longest driving day of the trip (~5 hrs), so keep an eye on LA traffic timing for the final stretch home.</div>
   </div>
 
 </main>
